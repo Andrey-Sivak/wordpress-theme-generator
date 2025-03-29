@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
+use WPTG\Config\Config;
 
 class ThemeGenerator
 {
@@ -54,7 +55,7 @@ class ThemeGenerator
         $this->themesDir = rtrim($this->themesDir, '/') . '/';
     }
 
-    public function generate(string $themeName): void
+    public function generate(string $themeName, string $themeDescription, string $textDomain): void
     {
         if (empty($themeName) || preg_match('/[^a-zA-Z0-9-_]/', $themeName)) {
             throw new InvalidArgumentException("Theme name must be non-empty and contain only letters, numbers, hyphens, or underscores.");
@@ -71,6 +72,9 @@ class ThemeGenerator
         $reflection = new ReflectionClass(self::class);
         $attributes = $reflection->getReflectionConstant('DUMMY_CONSTANT')->getAttributes(ThemeFile::class);
 
+        $authorGithubUrl = Config::AUTHOR_GITHUB_URL;
+        $authorName = Config::AUTHOR_NAME;
+
         foreach ($attributes as $attribute) {
             $file = $attribute->newInstance();
             $source = $this->templateDir . $file->path;
@@ -81,9 +85,28 @@ class ThemeGenerator
                 mkdir($dir, 0755, true) || throw new RuntimeException("Failed to create directory '$dir'.");
             }
 
-            file_exists($source)
-                ? copy($source, $dest) || throw new RuntimeException("Failed to copy '$source' to '$dest'.")
-                : touch($dest) || throw new RuntimeException("Failed to create file '$dest'.");
+            if ($file->path === 'style.css') {
+                $styleContent = <<<CSS
+/*!
+Theme Name: {$themeName}
+Theme URI: {$authorGithubUrl}/{$themeName}
+Author: {$authorName}
+Author URI: {$authorGithubUrl}
+Description: {$themeDescription}
+Version: 1.0.0
+Tested up to: 6.5
+Requires PHP: 8.3
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: {$textDomain}
+*/
+CSS;
+                file_put_contents($dest, $styleContent) || throw new RuntimeException("Failed to write to '$dest'.");
+            } elseif (file_exists($source)) {
+                copy($source, $dest) || throw new RuntimeException("Failed to copy '$source' to '$dest'.");
+            } else {
+                touch($dest) || throw new RuntimeException("Failed to create file '$dest'.");
+            }
         }
     }
 }

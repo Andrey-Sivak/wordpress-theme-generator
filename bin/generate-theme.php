@@ -10,9 +10,12 @@ try {
     $themesDir = __DIR__ . '/../themes/';
     is_dir($themesDir) || mkdir($themesDir, 0755, true) || throw new RuntimeException("Failed to create themes directory.");
 
-    $generator = new ThemeGenerator(themesDir: $themesDir);
     $themeName = CliHelper::prompt("Enter the theme name: ");
-    $generator->generate($themeName);
+    $themeDescription = CliHelper::prompt("Enter the theme description: ");
+    $textDomain = CliHelper::prompt("Enter the text domain (e.g., {$themeName}): ");
+
+    $generator = new ThemeGenerator(themesDir: $themesDir);
+    $generator->generate($themeName, $themeDescription, $textDomain);
 
     echo "Theme '$themeName' generated successfully!\n";
 } catch (Throwable $e) {

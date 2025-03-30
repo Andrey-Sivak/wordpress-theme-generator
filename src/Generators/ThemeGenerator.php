@@ -9,6 +9,7 @@ use RuntimeException;
 use WPTG\Attributes\ThemeFile;
 use WPTG\Handlers\FooterFileHandler;
 use WPTG\Handlers\HeaderFileHandler;
+use WPTG\Handlers\PhpcsFileHandler;
 use WPTG\Handlers\StyleFileHandler;
 use WPTG\Handlers\FunctionsFileHandler;
 
@@ -62,6 +63,7 @@ class ThemeGenerator
             'functions.php' => new FunctionsFileHandler(),
             'header.php' => new HeaderFileHandler(),
             'footer.php' => new FooterFileHandler(),
+            'phpcs.xml' => new PhpcsFileHandler(),
         ];
     }
 

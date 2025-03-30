@@ -106,8 +106,26 @@ function {$themeName}_scripts(): void {
 	wp_enqueue_style( '{$themeName}-main-style', get_template_directory_uri() . '/dist/css/style.min.css', array(), _{$textDomainUpper}_VERSION );
 	wp_enqueue_style( '{$themeName}-fonts-style', get_template_directory_uri() . '/fonts/{$themeName}-fonts.css', array(), _{$textDomainUpper}_VERSION );
 
-	wp_enqueue_script( '{$themeName}-main-script', get_template_directory_uri() . '/dist/js/app.min.js', array(), _{$textDomainUpper}_VERSION, true );
-	wp_localize_script( '{$themeName}-main-script', 'options', \${$themeName}_options );
+    \$manifest_path = get_template_directory() . '/dist/js/manifest.json';
+
+    if ( file_exists( \$manifest_path ) ) {
+        \$manifest = json_decode( file_get_contents( \$manifest_path ), true );
+
+        if ( is_array( \$manifest ) && !empty( \$manifest ) ) {
+            foreach ( \$manifest as \$file ) {
+                if ( str_contains( \$file, '.js' ) ) {
+                    \$chunk_handle = 'app-chunk-' . basename( \$file, '.js' );
+                    \$chunk_handle = str_replace( '.chunk', '', \$chunk_handle );
+
+                    wp_enqueue_script( \$chunk_handle, get_template_directory_uri() . \$file, array(), _{$textDomainUpper}_VERSION, true );
+
+                    if ( str_contains( \$file, 'app.min.js' ) ) {
+                        wp_localize_script( \$chunk_handle, 'options', \${$themeName}_options );
+                    }
+                }
+            }
+        }
+    }
 }
 add_action( 'wp_enqueue_scripts', '{$themeName}_scripts' );
 PHP;

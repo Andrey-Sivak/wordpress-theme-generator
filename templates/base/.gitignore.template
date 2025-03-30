@@ -1,0 +1,68 @@
+# Editor settings & local files
+/.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.idea/
+.history/
+
+# Ignore WordPress core files (not theme files)
+*.log
+
+# Ignore compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Ignore logs & databases
+*.sql
+*.sqlite
+.DS_Store
+
+# Ignore package and build files
+/backup*
+node_modules/
+vendor/
+dist/
+guten/build/
+.ftp-deploy-sync-state.json
+.eslintcache
+.parcel-cache/
+.turbo/
+.yarn/
+
+# Ignore archives & packaged files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Keep important files
+!.gitignore
+!.editorconfig
+!.phpcs.xml
+!README.md
+!CHANGELOG.md
+!composer.json
+!composer.lock
+!package-lock.json
+
+# Keep favicon and manifest files
+!android-chrome-*.png
+!apple-touch-icon*.png
+!browserconfig.xml
+!favicon*.png
+!favicon*.ico
+!manifest.json
+!mstile-*.png
+!safari-pinned-tab.svg
+!site.webmanifest

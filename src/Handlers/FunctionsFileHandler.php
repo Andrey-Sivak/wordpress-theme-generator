@@ -15,14 +15,30 @@ class FunctionsFileHandler implements FileHandler
 
         return <<<PHP
 <?php
+/**
+ * Theme functions and definitions
+ *
+ * This file sets up the theme by registering features, enqueuing assets, and defining
+ * utility functions. It is loaded automatically by WordPress on every page load.
+ *
+ * @package {$themeName}
+ */
+ 
 declare(strict_types=1);
 
 /**
- * {$themeName} functions and definitions
+ * The {$themeName} functions and definitions
  */
 
 define('_{$textDomainUpper}_VERSION', '1.0.0');
 
+/**
+ * Sets up theme defaults and registers support for various WordPress features.
+ *
+ * Note that this function is hooked into the after_setup_theme hook, which
+ * runs before the init hook. The init hook is too late for some features, such
+ * as indicating support for post thumbnails.
+ */
 function {$themeName}_setup(): void {
     // Make theme available for translation
     load_theme_textdomain('{$textDomain}', get_template_directory() . '/languages');
@@ -59,10 +75,18 @@ function {$themeName}_setup(): void {
 }
 add_action('after_setup_theme', '{$themeName}_setup');
 
+/**
+ * Get ajax url
+ *
+ * @return string
+ */
 function {$themeName}_get_ajax_url(): string {
     return get_template_directory_uri() . '/inc/front-ajax.php';
 }
 
+/**
+ * Enqueue scripts and styles.
+ */
 function {$themeName}_scripts(): void {
     \$ajax_url = {$themeName}_get_ajax_url();
 

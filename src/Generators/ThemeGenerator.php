@@ -10,6 +10,7 @@ use WPTG\Attributes\ThemeFile;
 use WPTG\Handlers\ComposerFileHandler;
 use WPTG\Handlers\FooterFileHandler;
 use WPTG\Handlers\HeaderFileHandler;
+use WPTG\Handlers\PackageFileHandler;
 use WPTG\Handlers\PhpcsFileHandler;
 use WPTG\Handlers\StyleFileHandler;
 use WPTG\Handlers\FunctionsFileHandler;
@@ -66,6 +67,7 @@ class ThemeGenerator
             'footer.php' => new FooterFileHandler(),
             'phpcs.xml' => new PhpcsFileHandler(),
             'composer.json' => new ComposerFileHandler(),
+            'package.json' => new PackageFileHandler(),
         ];
     }
 

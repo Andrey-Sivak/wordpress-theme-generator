@@ -1,0 +1,16 @@
+<?php
+declare(strict_types=1);
+
+get_header();
+?>
+
+    <main class="site-main">
+        <?php
+        while ( have_posts() ) :
+            the_content();
+        endwhile;
+        ?>
+    </main>
+
+<?php
+get_footer();

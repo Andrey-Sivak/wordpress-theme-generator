@@ -50,6 +50,10 @@ class ThemeGenerator
     #[ThemeFile(path: 'fonts/fonts.css', required: false)]
     #[ThemeFile(path: 'gulp/config/path.js', required: false)]
     #[ThemeFile(path: 'gulp/config/plugins.js', required: false)]
+    #[ThemeFile(path: 'gulp/tasks/images.js', required: false)]
+    #[ThemeFile(path: 'gulp/tasks/js.js', required: false)]
+    #[ThemeFile(path: 'gulp/tasks/reset.js', required: false)]
+    #[ThemeFile(path: 'gulp/tasks/scss.js', required: false)]
     #[ThemeFile(path: 'inc/front-ajax.php', required: false)]
     private const DUMMY_CONSTANT = 'placeholder';
 

@@ -40,6 +40,7 @@ class ThemeGenerator
     #[ThemeFile(path: '.stylelintrc.json', required: false)]
     #[ThemeFile(path: '.prettierrc', required: false)]
     #[ThemeFile(path: '.prettierrc.json', required: false)]
+    #[ThemeFile(path: '.browserslistrc', required: false)]
     #[ThemeFile(path: '.prettierignore', required: false)]
     #[ThemeFile(path: '.gitignore', required: false)]
     #[ThemeFile(path: '.eslintrc', required: false)]

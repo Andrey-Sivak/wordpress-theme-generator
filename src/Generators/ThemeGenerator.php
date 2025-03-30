@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
+use WPTG\Handlers\FooterFileHandler;
 use WPTG\Handlers\HeaderFileHandler;
 use WPTG\Handlers\StyleFileHandler;
 use WPTG\Handlers\FunctionsFileHandler;
@@ -61,6 +62,7 @@ class ThemeGenerator
             'style.css' => new StyleFileHandler(),
             'functions.php' => new FunctionsFileHandler(),
             'header.php' => new HeaderFileHandler(),
+            'footer.php' => new FooterFileHandler(),
         ];
     }
 

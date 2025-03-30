@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
+use WPTG\Handlers\IndexFileHandler;
 use WPTG\Handlers\PageFileHandler;
 use WPTG\Handlers\SearchFileHandler;
 use WPTG\Handlers\SingleFileHandler;
@@ -65,6 +66,7 @@ class ThemeGenerator
             'single.php' => new SingleFileHandler(),
             'search.php' => new SearchFileHandler(),
             'page.php' => new PageFileHandler(),
+            'index.php' => new IndexFileHandler(),
         ];
     }
 

@@ -104,7 +104,7 @@ function {$themeName}_scripts(): void {
 
 	wp_enqueue_style( '{$themeName}-style', get_stylesheet_uri(), array(), _{$textDomainUpper}_VERSION );
 	wp_enqueue_style( '{$themeName}-main-style', get_template_directory_uri() . '/dist/css/style.min.css', array(), _{$textDomainUpper}_VERSION );
-	wp_enqueue_style( '{$themeName}-fonts-style', get_template_directory_uri() . '/fonts/{$themeName}-fonts.css', array(), _{$textDomainUpper}_VERSION );
+	wp_enqueue_style( 'fonts-style', get_template_directory_uri() . '/fonts/fonts.css', array(), _{$textDomainUpper}_VERSION );
 
     \$manifest_path = get_template_directory() . '/dist/js/manifest.json';
 

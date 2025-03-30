@@ -1,18 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace WPTG\Handlers;
-
-class SearchFileHandler implements FileHandler {
-    public function generateContent(
-        string $themeName,
-        string $themeDescription,
-        string $textDomain
-    ): string {
-        return <<<PHP
-<?php
-declare(strict_types=1);
-
 get_header();
 ?>
 
@@ -34,6 +22,3 @@ get_header();
 
 <?php
 get_footer();
-PHP;
-    }
-}

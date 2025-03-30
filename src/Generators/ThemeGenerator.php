@@ -30,7 +30,6 @@ class ThemeGenerator
     #[ThemeFile(path: 'functions.php', required: true)]
     #[ThemeFile(path: 'footer.php', required: true)]
     #[ThemeFile(path: 'composer.json', required: false)]
-    #[ThemeFile(path: 'comments.php', required: true)]
     #[ThemeFile(path: 'CHANGELOG.md', required: false)]
     #[ThemeFile(path: 'archive.php', required: true)]
     #[ThemeFile(path: '404.php', required: true)]

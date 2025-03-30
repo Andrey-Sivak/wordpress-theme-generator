@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
+use WPTG\Handlers\SingleFileHandler;
 use WPTG\Handlers\StyleFileHandler;
 use WPTG\Handlers\FunctionsFileHandler;
 
@@ -59,6 +60,7 @@ class ThemeGenerator
         $this->fileHandlers = [
             'style.css' => new StyleFileHandler(),
             'functions.php' => new FunctionsFileHandler(),
+            'single.php' => new SingleFileHandler(),
         ];
     }
 

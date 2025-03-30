@@ -10,6 +10,7 @@ use WPTG\Attributes\ThemeFile;
 use WPTG\Handlers\ComposerFileHandler;
 use WPTG\Handlers\FooterFileHandler;
 use WPTG\Handlers\HeaderFileHandler;
+use WPTG\Handlers\LicenseFileHandler;
 use WPTG\Handlers\PackageFileHandler;
 use WPTG\Handlers\PhpcsFileHandler;
 use WPTG\Handlers\StyleFileHandler;
@@ -73,6 +74,7 @@ class ThemeGenerator
             'phpcs.xml' => new PhpcsFileHandler(),
             'composer.json' => new ComposerFileHandler(),
             'package.json' => new PackageFileHandler(),
+            'LICENSE' => new LicenseFileHandler(),
         ];
     }
 

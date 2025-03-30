@@ -7,7 +7,8 @@ use InvalidArgumentException;
 use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
-use WPTG\Config\Config;
+use WPTG\Handlers\StyleFileHandler;
+use WPTG\Handlers\FunctionsFileHandler;
 
 class ThemeGenerator
 {
@@ -47,12 +48,18 @@ class ThemeGenerator
     #[ThemeFile(path: 'inc/front-ajax.php', required: false)]
     private const DUMMY_CONSTANT = 'placeholder';
 
+    private array $fileHandlers = [];
+
     public function __construct(
         private string          $themesDir,
         private readonly string $templateDir = __DIR__ . '/../../templates/base/'
     )
     {
         $this->themesDir = rtrim($this->themesDir, '/') . '/';
+        $this->fileHandlers = [
+            'style.css' => new StyleFileHandler(),
+            'functions.php' => new FunctionsFileHandler(),
+        ];
     }
 
     public function generate(string $themeName, string $themeDescription, string $textDomain): void
@@ -72,9 +79,6 @@ class ThemeGenerator
         $reflection = new ReflectionClass(self::class);
         $attributes = $reflection->getReflectionConstant('DUMMY_CONSTANT')->getAttributes(ThemeFile::class);
 
-        $authorGithubUrl = Config::AUTHOR_GITHUB_URL;
-        $authorName = Config::AUTHOR_NAME;
-
         foreach ($attributes as $attribute) {
             $file = $attribute->newInstance();
             $source = $this->templateDir . $file->path;
@@ -85,23 +89,10 @@ class ThemeGenerator
                 mkdir($dir, 0755, true) || throw new RuntimeException("Failed to create directory '$dir'.");
             }
 
-            if ($file->path === 'style.css') {
-                $styleContent = <<<CSS
-/*!
-Theme Name: {$themeName}
-Theme URI: {$authorGithubUrl}/{$themeName}
-Author: {$authorName}
-Author URI: {$authorGithubUrl}
-Description: {$themeDescription}
-Version: 1.0.0
-Tested up to: 6.5
-Requires PHP: 8.3
-License: GNU General Public License v2 or later
-License URI: LICENSE
-Text Domain: {$textDomain}
-*/
-CSS;
-                file_put_contents($dest, $styleContent) || throw new RuntimeException("Failed to write to '$dest'.");
+            if (isset($this->fileHandlers[$file->path])) {
+                $handler = $this->fileHandlers[$file->path];
+                $content = $handler->generateContent($themeName, $themeDescription, $textDomain);
+                file_put_contents($dest, $content) || throw new RuntimeException("Failed to write to '$dest'.");
             } elseif (file_exists($source)) {
                 copy($source, $dest) || throw new RuntimeException("Failed to copy '$source' to '$dest'.");
             } else {

@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
+use WPTG\Handlers\ComposerFileHandler;
 use WPTG\Handlers\FooterFileHandler;
 use WPTG\Handlers\HeaderFileHandler;
 use WPTG\Handlers\PhpcsFileHandler;
@@ -64,6 +65,7 @@ class ThemeGenerator
             'header.php' => new HeaderFileHandler(),
             'footer.php' => new FooterFileHandler(),
             'phpcs.xml' => new PhpcsFileHandler(),
+            'composer.json' => new ComposerFileHandler(),
         ];
     }
 

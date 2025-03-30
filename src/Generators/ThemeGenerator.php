@@ -97,7 +97,23 @@ class ThemeGenerator
                 $content = $handler->generateContent($themeName, $themeDescription, $textDomain);
                 file_put_contents($dest, $content) || throw new RuntimeException("Failed to write to '$dest'.");
             } elseif (file_exists($source)) {
-                copy($source, $dest) || throw new RuntimeException("Failed to copy '$source' to '$dest'.");
+                $content = file_get_contents($source);
+                if (str_ends_with($file->path, '.php') && !str_contains($content, '/**')) {
+                    $docblock = <<<PHP
+<?php
+/**
+ * Template file for {$file->path}
+ *
+ * This file is part of the {$themeName} theme.
+ *
+ * @package {$themeName}
+ */
+ 
+declare(strict_types=1);
+PHP;
+                    $content = $docblock . substr($content, strpos($content, "\n") + 1);
+                }
+                file_put_contents($dest, $content) || throw new \RuntimeException("Failed to write to '$dest'.");
             } else {
                 touch($dest) || throw new RuntimeException("Failed to create file '$dest'.");
             }

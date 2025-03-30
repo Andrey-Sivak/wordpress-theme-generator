@@ -8,9 +8,6 @@ use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
 use WPTG\Handlers\HeaderFileHandler;
-use WPTG\Handlers\IndexFileHandler;
-use WPTG\Handlers\PageFileHandler;
-use WPTG\Handlers\SearchFileHandler;
 use WPTG\Handlers\StyleFileHandler;
 use WPTG\Handlers\FunctionsFileHandler;
 
@@ -63,9 +60,6 @@ class ThemeGenerator
         $this->fileHandlers = [
             'style.css' => new StyleFileHandler(),
             'functions.php' => new FunctionsFileHandler(),
-            'search.php' => new SearchFileHandler(),
-            'page.php' => new PageFileHandler(),
-            'index.php' => new IndexFileHandler(),
             'header.php' => new HeaderFileHandler(),
         ];
     }

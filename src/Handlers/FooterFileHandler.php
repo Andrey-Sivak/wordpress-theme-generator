@@ -23,6 +23,11 @@ class FooterFileHandler implements FileHandler {
 declare(strict_types=1);
 ?>
 <footer id="{$textDomain}-footer" class=""></footer>
+
+<?php wp_footer(); ?>
+
+</body>
+</html>
 PHP;
     }
 }

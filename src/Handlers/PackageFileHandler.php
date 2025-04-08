@@ -74,7 +74,6 @@ class PackageFileHandler implements FileHandler
                 'terser-webpack-plugin' => '^5.3.14',
                 'webpack' => '^5.98.0',
                 'webpack-stream' => '^7.0.0',
-                'gulp-cached' => '^1.1.1',
                 'gulp-clone' => '^2.0.1',
                 'webpack-manifest-plugin' => '^5.0.1',
             ]

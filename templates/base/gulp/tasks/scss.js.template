@@ -6,14 +6,12 @@ import tailwindcss from '@tailwindcss/postcss';
 import postcss from 'gulp-postcss';
 import cssnano from 'cssnano';
 import clone from 'gulp-clone';
-import cache from 'gulp-cached';
 
 const sass = gulpSass(dartSass);
 
 export const scss = () => {
 	return app.gulp
 		.src(app.path.src.scss)
-		.pipe(cache('scss'))
 		.pipe(
 			app.plugins.plumber(
 				app.plugins.notify.onError({

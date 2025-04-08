@@ -86,7 +86,7 @@ class ThemeGenerator
         string $textDomain
     ): void
     {
-        $targetDir = $this->themesDir . $themeSlug;
+        $targetDir = $this->themesDir . $themeName;
         if (is_dir($targetDir)) {
             throw new \RuntimeException("A folder named '$themeSlug' already exists in 'themes/'.");
         }

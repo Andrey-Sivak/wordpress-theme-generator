@@ -1,0 +1,6 @@
+@import "tailwindcss/index.css";
+
+html,
+body,
+*:before,
+*:after {}

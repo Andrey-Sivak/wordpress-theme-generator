@@ -35,6 +35,9 @@ class ComposerFileHandler implements FileHandler
                 'platform' => [
                     'php' => '8.3',
                 ],
+                'allow-plugins' => [
+                    'dealerdirect/phpcodesniffer-composer-installer' => true,
+                ]
             ],
             'scripts' => [
                 'post-install-cmd' => [

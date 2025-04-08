@@ -11,11 +11,17 @@ try {
     is_dir($themesDir) || mkdir($themesDir, 0755, true) || throw new RuntimeException("Failed to create themes directory.");
 
     $themeName = CliHelper::prompt("Enter the theme name: ");
+    $themeSlug = strtolower(str_replace(' ', '_', $themeName));
+    $themeSlug = strtolower(str_replace('-', '_', $themeSlug));
+    if (empty($themeSlug) || preg_match('/[^a-z0-9-]/', $themeSlug)) {
+        throw new \InvalidArgumentException("Theme name must be non-empty and contain only letters, numbers, or hyphens after normalization.");
+    }
+
     $themeDescription = CliHelper::prompt("Enter the theme description: ");
-    $textDomain = CliHelper::prompt("Enter the text domain (e.g., {$themeName}): ");
+    $textDomain = CliHelper::prompt("Enter the text domain (e.g., {$themeSlug}): ");
 
     $generator = new ThemeGenerator(themesDir: $themesDir);
-    $generator->generate($themeName, $themeDescription, $textDomain);
+    $generator->generate($themeName, $themeSlug, $themeDescription, $textDomain);
 
     echo "Theme '$themeName' generated successfully!\n";
 } catch (Throwable $e) {

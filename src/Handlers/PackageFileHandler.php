@@ -4,20 +4,19 @@ declare(strict_types=1);
 namespace WPTG\Handlers;
 
 use WPTG\Config\Config;
+use WPTG\Dto\ThemeOptions;
 
-class PackageFileHandler implements FileHandler {
-    public function generateContent(
-        string $themeName,
-        string $themeDescription,
-        string $textDomain
-    ): string {
+class PackageFileHandler implements FileHandler
+{
+    public function generateContent(ThemeOptions $options): string
+    {
         $authorName = Config::AUTHOR_NAME;
         $authorGithubUrl = Config::AUTHOR_GITHUB_URL;
 
         $json = [
-            'name' => $themeName,
+            'name' => $options->themeSlug,
             'version' => '1.0.0',
-            'description' => $themeDescription,
+            'description' => $options->themeDescription,
             'main' => 'gulpfile.js',
             'type' => 'module',
             'author' => "{$authorName} && Contributors",
@@ -26,13 +25,13 @@ class PackageFileHandler implements FileHandler {
                 'WordPress',
                 'Theme',
             ],
-            'homepage' => "{$authorGithubUrl}/{$themeName}#readme",
+            'homepage' => "{$authorGithubUrl}/{$options->themeSlug}#readme",
             'repository' => [
                 'type' => 'git',
-                'url' => "git+{$authorGithubUrl}/{$themeName}.git",
+                'url' => "git+{$authorGithubUrl}/{$options->themeSlug}.git",
             ],
             'bugs' => [
-                'url' => "{$authorGithubUrl}/{$themeName}/issues",
+                'url' => "{$authorGithubUrl}/{$options->themeSlug}/issues",
             ],
             'scripts' => [
                 'dev' => 'gulp',
@@ -50,7 +49,6 @@ class PackageFileHandler implements FileHandler {
                 'cssnano' => '^7.0.6',
                 'del' => '^8.0.0',
                 'eslint' => '^9.22.0',
-//                'eslint-config-prettier' => '^10.1.1',
                 'eslint-plugin-prettier' => '^5.2.3',
                 'eslint-webpack-plugin' => '^5.0.0',
                 'gulp' => '^5.0.0',
@@ -63,9 +61,7 @@ class PackageFileHandler implements FileHandler {
                 'gulp-rename' => '^2.0.0',
                 'gulp-sass' => '^6.0.1',
                 'gulp-util' => '^3.0.8',
-//                'gulp-webp-html-nosvg' => '^1.1.1',
                 'node-sass' => '^9.0.0',
-//                'package-json-to-wordpress-style-css' => '^1.0.6',
                 'pkginfo' => '^0.4.1',
                 'postcss' => '^8.5.3',
                 'postcss-import' => '^16.1.0',
@@ -81,8 +77,7 @@ class PackageFileHandler implements FileHandler {
                 'gulp-cached' => '^1.1.1',
                 'gulp-clone' => '^2.0.1',
                 'webpack-manifest-plugin' => '^5.0.1',
-            ],
-            'dependencies' => [],
+            ]
         ];
 
         return json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

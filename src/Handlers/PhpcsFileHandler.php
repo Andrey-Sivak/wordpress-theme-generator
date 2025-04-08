@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 namespace WPTG\Handlers;
 
+use WPTG\Dto\ThemeOptions;
+
 class PhpcsFileHandler implements FileHandler
 {
-    public function generateContent(
-        string $themeName,
-        string $themeDescription,
-        string $textDomain
-    ): string
+    public function generateContent(ThemeOptions $options): string
     {
         return <<<XML
 <?xml version="1.0"?>
-<ruleset name="{$themeName}Standards">
-    <description>Coding standards for {$themeName} theme</description>
+<ruleset name="{$options->themeName} Standards">
+    <description>Coding standards for {$options->themeName} theme</description>
 
     <!-- Show progress and sniff codes -->
     <arg value="ps"/>
@@ -42,7 +40,7 @@ class PhpcsFileHandler implements FileHandler
     <!-- Enforce text domain for i18n -->
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" value="{$textDomain}"/>
+            <property name="text_domain" value="{$options->textDomain}"/>
         </properties>
     </rule>
 </ruleset>

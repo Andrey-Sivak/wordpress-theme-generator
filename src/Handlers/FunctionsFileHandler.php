@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace WPTG\Handlers;
 
+use WPTG\Dto\ThemeOptions;
+
 class FunctionsFileHandler implements FileHandler
 {
-    public function generateContent(
-        string $themeName,
-        string $themeDescription,
-        string $textDomain
-    ): string
+    public function generateContent(ThemeOptions $options): string
     {
-        $textDomainUpper = strtoupper($textDomain);
+        $textDomainUpper = strtoupper($options->textDomain);
 
         return <<<PHP
 <?php
@@ -21,13 +19,13 @@ class FunctionsFileHandler implements FileHandler
  * This file sets up the theme by registering features, enqueuing assets, and defining
  * utility functions. It is loaded automatically by WordPress on every page load.
  *
- * @package {$themeName}
+ * @package {$options->themeName}
  */
  
 declare(strict_types=1);
 
 /**
- * The {$themeName} functions and definitions
+ * The {$options->themeName} functions and definitions
  */
 
 define('_{$textDomainUpper}_VERSION', '1.0.0');
@@ -39,9 +37,9 @@ define('_{$textDomainUpper}_VERSION', '1.0.0');
  * runs before the init hook. The init hook is too late for some features, such
  * as indicating support for post thumbnails.
  */
-function {$themeName}_setup(): void {
+function {$options->themeSlug}_setup(): void {
 	// Make theme available for translation.
-	load_theme_textdomain( '{$textDomain}', get_template_directory() . '/languages' );
+	load_theme_textdomain( '{$options->textDomain}', get_template_directory() . '/languages' );
 
 	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
@@ -55,7 +53,7 @@ function {$themeName}_setup(): void {
 	// Register navigation menus.
 	register_nav_menus(
 		array(
-			'menu-1' => esc_html__( 'Primary', '{$textDomain}' ),
+			'menu-1' => esc_html__( 'Primary', '{$options->textDomain}' ),
 		),
 	);
 
@@ -73,24 +71,24 @@ function {$themeName}_setup(): void {
 		),
 	);
 }
-add_action('after_setup_theme', '{$themeName}_setup');
+add_action('after_setup_theme', '{$options->themeSlug}_setup');
 
 /**
  * Get ajax url
  *
  * @return string
  */
-function {$themeName}_get_ajax_url(): string {
+function {$options->themeSlug}_get_ajax_url(): string {
 	return get_template_directory_uri() . '/inc/front-ajax.php';
 }
 
 /**
  * Enqueue scripts and styles.
  */
-function {$themeName}_scripts(): void {
-	\$ajax_url = {$themeName}_get_ajax_url();
+function {$options->themeSlug}_scripts(): void {
+	\$ajax_url = {$options->themeSlug}_get_ajax_url();
 
-	\${$themeName}_options = array(
+	\${$options->themeSlug}_options = array(
 		'ajax_url' => \$ajax_url,
 		'home_url' => get_home_url(),
 	);
@@ -102,8 +100,8 @@ function {$themeName}_scripts(): void {
 	wp_dequeue_script( 'jquery' );
 	wp_deregister_script( 'jquery' );
 
-	wp_enqueue_style( '{$themeName}-style', get_stylesheet_uri(), array(), _{$textDomainUpper}_VERSION );
-	wp_enqueue_style( '{$themeName}-main-style', get_template_directory_uri() . '/dist/css/style.min.css', array(), _{$textDomainUpper}_VERSION );
+	wp_enqueue_style( '{$options->themeSlug}-style', get_stylesheet_uri(), array(), _{$textDomainUpper}_VERSION );
+	wp_enqueue_style( '{$options->themeSlug}-main-style', get_template_directory_uri() . '/dist/css/style.min.css', array(), _{$textDomainUpper}_VERSION );
 	wp_enqueue_style( 'fonts-style', get_template_directory_uri() . '/fonts/fonts.css', array(), _{$textDomainUpper}_VERSION );
 
     \$manifest_path = get_template_directory() . '/dist/js/manifest.json';
@@ -120,14 +118,14 @@ function {$themeName}_scripts(): void {
                     wp_enqueue_script( \$chunk_handle, get_template_directory_uri() . \$file, array(), _{$textDomainUpper}_VERSION, true );
 
                     if ( str_contains( \$file, 'app.min.js' ) ) {
-                        wp_localize_script( \$chunk_handle, 'options', \${$themeName}_options );
+                        wp_localize_script( \$chunk_handle, 'options', \${$options->themeSlug}_options );
                     }
                 }
             }
         }
     }
 }
-add_action( 'wp_enqueue_scripts', '{$themeName}_scripts' );
+add_action( 'wp_enqueue_scripts', '{$options->themeSlug}_scripts' );
 PHP;
     }
 }

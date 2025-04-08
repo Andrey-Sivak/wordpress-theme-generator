@@ -4,25 +4,23 @@ declare(strict_types=1);
 namespace WPTG\Handlers;
 
 use WPTG\Config\Config;
+use WPTG\Dto\ThemeOptions;
 
 class ComposerFileHandler implements FileHandler
 {
-    public function generateContent(
-        string $themeName,
-        string $themeDescription,
-        string $textDomain
-    ): string
+    public function generateContent(ThemeOptions $options): string
     {
         $authorName = Config::AUTHOR_NAME;
+        $lowerAuthorName = strtolower($authorName);
         $json = [
-            'name' => "andrey-sivak/{$themeName}",
-            'description' => $themeDescription,
+            'name' => "{$lowerAuthorName}/{$options->themeSlug}",
+            'description' => $options->themeDescription,
             'type' => 'wordpress-theme',
             'license' => 'GPL-2.0-or-later',
             'authors' => [
                 [
                     'name' => $authorName,
-                    'homepage' => Config::AUTHOR_GITHUB_URL . '/' . $themeName,
+                    'homepage' => Config::AUTHOR_GITHUB_URL . '/' . $options->themeSlug,
                 ],
             ],
             'require' => [

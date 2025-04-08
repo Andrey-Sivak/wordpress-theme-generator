@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use RuntimeException;
 use WPTG\Attributes\ThemeFile;
+use WPTG\Dto\ThemeOptions;
 use WPTG\Handlers\ComposerFileHandler;
 use WPTG\Handlers\FooterFileHandler;
 use WPTG\Handlers\HeaderFileHandler;
@@ -78,23 +79,23 @@ class ThemeGenerator
         ];
     }
 
-    public function generate(string $themeName, string $themeDescription, string $textDomain): void
+    public function generate(
+        string $themeName,
+        string $themeSlug,
+        string $themeDescription,
+        string $textDomain
+    ): void
     {
-        if (empty($themeName) || preg_match('/[^a-zA-Z0-9-_]/', $themeName)) {
-            throw new InvalidArgumentException("Theme name must be non-empty and contain only letters, numbers, hyphens, or underscores.");
-        }
-
-        $targetDir = $this->themesDir . $themeName;
-
+        $targetDir = $this->themesDir . $themeSlug;
         if (is_dir($targetDir)) {
-            throw new RuntimeException("A folder named '$themeName' already exists in 'themes/'.");
+            throw new \RuntimeException("A folder named '$themeSlug' already exists in 'themes/'.");
         }
-
-        mkdir($targetDir, 0755, true) || throw new RuntimeException("Failed to create directory '$targetDir'.");
+        mkdir($targetDir, 0755, true) || throw new \RuntimeException("Failed to create directory '$targetDir'.");
 
         $reflection = new ReflectionClass(self::class);
         $attributes = $reflection->getReflectionConstant('DUMMY_CONSTANT')->getAttributes(ThemeFile::class);
 
+        $options = new ThemeOptions($themeName, $themeSlug, $themeDescription, $textDomain);
         foreach ($attributes as $attribute) {
             $file = $attribute->newInstance();
             $source = $this->templateDir . $file->path . '.template';
@@ -107,7 +108,7 @@ class ThemeGenerator
 
             if (isset($this->fileHandlers[$file->path])) {
                 $handler = $this->fileHandlers[$file->path];
-                $content = $handler->generateContent($themeName, $themeDescription, $textDomain);
+                $content = $handler->generateContent($options);
                 file_put_contents($dest, $content) || throw new RuntimeException("Failed to write to '$dest'.");
             } elseif (file_exists($source)) {
                 $content = file_get_contents($source);

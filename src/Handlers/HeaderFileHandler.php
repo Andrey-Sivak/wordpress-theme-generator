@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace WPTG\Handlers;
 
-class HeaderFileHandler implements FileHandler {
-    public function generateContent(
-        string $themeName,
-        string $themeDescription,
-        string $textDomain
-    ): string {
+use WPTG\Dto\ThemeOptions;
+
+class HeaderFileHandler implements FileHandler
+{
+    public function generateContent(ThemeOptions $options): string
+    {
         return <<<PHP
 <?php
 /**
@@ -17,12 +17,12 @@ class HeaderFileHandler implements FileHandler {
  * This file contains the HTML head section, opening body tag, and top-level site markup
  * such as the site header and navigation. It is included in all front-end pages via get_header().
  *
- * @package {themeName}
+ * @package {$options->themeName}
  */
  
 declare(strict_types=1);
 
-\${$themeName}_body_class = '';
+\${$options->themeSlug}_body_class = '';
 ?>
 
 <!doctype html>
@@ -34,7 +34,7 @@ declare(strict_types=1);
 
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class( \${$themeName}_body_class ); ?>>
+<body <?php body_class( \${$options->themeSlug}_body_class ); ?>>
 <?php wp_body_open(); ?>
 	<header id="ew-header" class=""></header>
 PHP;
